@@ -5,7 +5,24 @@ authors:     [RoyCurtis]
 website:     https://github.com/RoyCurtis/Ankkuri
 main:        roycurtis.ankkuri.Ankkuri
 
+commands:
+  ankkuri:
+    description: Reloads Ankkuri's configuration
+    permission: ankkuri.reload
+    permission-message: "§c*** You don't have permission to reload Ankkuri"
+    usage: "§7*** §3/<command>§7 - Reloads Ankkuri (requires permission ankkuri.reload)"
+
 permissions:
+  ankkuri.*:
+    description: Bypasses all Ankkuri blocks and allows all other Ankkuri permissions
+    children:
+      ankkuri.bypass.*: true
+      ankkuri.reload: true
+
+  ankkuri.reload:
+    description: Allows reloading of Ankkuri's config
+    default: op
+
   ankkuri.bypass.*:
     description: Bypasses all Ankkuri blocks
     children:

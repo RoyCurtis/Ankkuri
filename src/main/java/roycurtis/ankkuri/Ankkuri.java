@@ -1,9 +1,12 @@
 package roycurtis.ankkuri;
 
 import org.bukkit.Material;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,10 +24,33 @@ public class Ankkuri extends JavaPlugin implements Listener
     private static final String PERM_BYPASS_RIDE       = "ankkuri.bypass.ride";
     private static final String PERM_BYPASS_RIDEONICE  = "ankkuri.bypass.rideonice";
 
+    static Ankkuri PLUGIN;
+    static Config  CONFIG;
+
     @Override
     public void onEnable()
     {
+        PLUGIN = this;
+        CONFIG = new Config();
         getServer().getPluginManager().registerEvents(this, this);
+    }
+
+    @Override
+    public void onDisable()
+    {
+        CONFIG = null;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender who, Command what, String label, String[] args)
+    {
+        CONFIG = new Config();
+        who.sendMessage("*** Ankkuri's config reloaded");
+
+        if ( !(who instanceof ConsoleCommandSender) )
+            getServer().getConsoleSender().sendMessage("[Ankkuri] Config reloaded");
+
+        return true;
     }
 
     /** Has to use PlayerInteractEvent, as VehicleCreateEvent does not track creator */
@@ -81,10 +107,7 @@ public class Ankkuri extends JavaPlugin implements Listener
         if (event.getVehicle().getType() != EntityType.BOAT)
             return;
 
-        if (event.getEntered().getType() != EntityType.PLAYER)
-            return;
-
-        Player   rider     = (Player) event.getEntered();
+        Entity   rider     = event.getEntered();
         Boat     boat      = (Boat) event.getVehicle();
         Material blockType = boat.getLocation()
             .add(0, -0.4, 0)
@@ -101,6 +124,15 @@ public class Ankkuri extends JavaPlugin implements Listener
             || blockType == Material.STATIONARY_WATER
             || blockType == Material.AIR)
             return;
+
+        // Prevent capturing of mobs in grounded boats, if enabled
+        if (event.getEntered().getType() != EntityType.PLAYER)
+        {
+            if (CONFIG.blockGroundedBoatCapture)
+                event.setCancelled(true);
+
+            return;
+        }
 
         // Bypass if boat on non-water and player has the right permission
         if ( rider.hasPermission(PERM_BYPASS_RIDE) )
