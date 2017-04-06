@@ -1,0 +1,19 @@
+name:        ${project.artifactId}
+version:     ${project.version}
+description: ${project.description}
+authors:     [RoyCurtis]
+website:     https://github.com/RoyCurtis/Ankkuri
+main:        roycurtis.ankkuri.Ankkuri
+
+permissions:
+  ankkuri.bypass.*:
+    description: Bypasses all Ankkuri blocks
+    children:
+      ankkuri.bypass.place: true
+      ankkuri.bypass.ride: true
+  ankkuri.bypass.place:
+    description: Allows players to place boats on non-water surfaces
+    default: op
+  ankkuri.bypass.ride:
+    description: Allows players to ride boats on non-water surfaces
+    default: op
