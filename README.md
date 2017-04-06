@@ -5,6 +5,8 @@ allow for ice boat tracks and nothing else.
 The name *ankkuri* is a Finnish term, meaning *anchor*. [This plugin was written for PsychoLynx for
 the Pelitcraft community.][1]
 
+[Click here to watch Ankkuri in action.][3]
+
 # Links
 
 * [Downloads](https://github.com/RoyCurtis/Ankkuri/releases)
@@ -43,3 +45,4 @@ For instructions and screenshots on how to. . .
 
 [1]: https://www.reddit.com/r/admincraft/comments/63nsl4/plugin_to_stop_boat_placementmovement_on_ground/
 [2]: https://docs.google.com/document/d/1TTDXG7IZ9M0D2-rzbILAWg1CKjynHK8fNGxbf3W4wBk/view
+[3]: http://vanderprot.gamealition.com/img/f931b.mp4
