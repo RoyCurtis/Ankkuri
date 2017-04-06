@@ -23,5 +23,11 @@ permissions:
     default: op
 
   ankkuri.bypass.ride:
-    description: Allows players to ride boats on non-water surfaces
+    description: Allows players to ride boats on all non-water surfaces
+    default: op
+    children:
+      ankkuri.bypass.rideonice: true
+
+  ankkuri.bypass.rideonice:
+    description: Allows players to ride boats on icy surfaces
     default: op
