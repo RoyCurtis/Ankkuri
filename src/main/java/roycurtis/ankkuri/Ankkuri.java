@@ -13,22 +13,12 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Logger;
-
 /** Core class of the Ankkuri plugin. Handles listener creation */
 public class Ankkuri extends JavaPlugin implements Listener
 {
     private static final String PERM_BYPASS_PLACE      = "ankkuri.bypass.place";
     private static final String PERM_BYPASS_PLACEONICE = "ankkuri.bypass.placeonice";
     private static final String PERM_BYPASS_RIDE       = "ankkuri.bypass.ride";
-
-    private static Logger LOGGER;
-
-    @Override
-    public void onLoad()
-    {
-        LOGGER = getLogger();
-    }
     private static final String PERM_BYPASS_RIDEONICE  = "ankkuri.bypass.rideonice";
 
     @Override
