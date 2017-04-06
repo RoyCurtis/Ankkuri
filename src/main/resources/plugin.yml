@@ -11,9 +11,17 @@ permissions:
     children:
       ankkuri.bypass.place: true
       ankkuri.bypass.ride: true
+
   ankkuri.bypass.place:
-    description: Allows players to place boats on non-water surfaces
+    description: Allows players to place boats on all non-water surfaces
     default: op
+    children:
+      ankkuri.bypass.placeonice: true
+
+  ankkuri.bypass.placeonice:
+    description: Allows players to place boats on icy surfaces
+    default: op
+
   ankkuri.bypass.ride:
     description: Allows players to ride boats on non-water surfaces
     default: op

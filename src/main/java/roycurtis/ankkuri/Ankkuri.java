@@ -14,8 +14,9 @@ import java.util.logging.Logger;
 /** Core class of the Ankkuri plugin. Handles listener creation */
 public class Ankkuri extends JavaPlugin implements Listener
 {
-    private static final String PERM_BYPASS_PLACE = "ankkuri.bypass.place";
-    private static final String PERM_BYPASS_RIDE  = "ankkuri.bypass.ride";
+    private static final String PERM_BYPASS_PLACE      = "ankkuri.bypass.place";
+    private static final String PERM_BYPASS_PLACEONICE = "ankkuri.bypass.placeonice";
+    private static final String PERM_BYPASS_RIDE       = "ankkuri.bypass.ride";
 
     private static Logger LOGGER;
 
@@ -36,6 +37,7 @@ public class Ankkuri extends JavaPlugin implements Listener
     @SuppressWarnings("deprecation")
     public void onBoatCreate(PlayerInteractEvent event)
     {
+        // Handle only placement of boat items
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
@@ -43,15 +45,29 @@ public class Ankkuri extends JavaPlugin implements Listener
         if (held == null)
             return;
 
-        Material type = held.getType();
-        if (type != Material.BOAT
-            && type != Material.BOAT_ACACIA
-            && type != Material.BOAT_BIRCH
-            && type != Material.BOAT_DARK_OAK
-            && type != Material.BOAT_JUNGLE
-            && type != Material.BOAT_SPRUCE)
+        Material blockType = event.getClickedBlock().getType();
+        Material relType   = event.getClickedBlock().getRelative( event.getBlockFace() ).getType();
+        Material itemType  = held.getType();
+        if (itemType != Material.BOAT
+            && itemType != Material.BOAT_ACACIA
+            && itemType != Material.BOAT_BIRCH
+            && itemType != Material.BOAT_DARK_OAK
+            && itemType != Material.BOAT_JUNGLE
+            && itemType != Material.BOAT_SPRUCE)
             return;
 
+        // Only handle if boat is being placed on non-water surface; compensate for underwater
+        if (blockType == Material.WATER || blockType == Material.STATIONARY_WATER)
+            return;
+        else if (relType == Material.WATER || relType == Material.STATIONARY_WATER)
+            return;
+
+        // Bypass if player is placing on ice and has the right permission
+        if (blockType == Material.ICE || blockType == Material.PACKED_ICE)
+        if ( event.getPlayer().hasPermission(PERM_BYPASS_PLACEONICE) )
+            return;
+
+        // Bypass if player is placing on non-water and has the right permission
         if ( event.getPlayer().hasPermission(PERM_BYPASS_PLACE) )
             return;
 
