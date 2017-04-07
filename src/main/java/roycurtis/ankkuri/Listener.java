@@ -12,7 +12,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
-import org.bukkit.inventory.ItemStack;
 
 import static roycurtis.ankkuri.Ankkuri.CONFIG;
 
@@ -31,27 +30,15 @@ public class Listener implements org.bukkit.event.Listener
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
-        ItemStack held = event.getItem();
-        if (held == null)
-            return;
-
         Material blockType = event.getClickedBlock().getType();
         Material relType   = event.getClickedBlock().getRelative( event.getBlockFace() ).getType();
-        Material itemType  = held.getType();
 
         // Only handle if held item is at least a boat
-        if (itemType != Material.BOAT
-            && itemType != Material.BOAT_ACACIA
-            && itemType != Material.BOAT_BIRCH
-            && itemType != Material.BOAT_DARK_OAK
-            && itemType != Material.BOAT_JUNGLE
-            && itemType != Material.BOAT_SPRUCE)
+        if ( !Utility.isBoatItem( event.getItem() ) )
             return;
 
         // Only handle if boat is being placed on non-water surface; compensate for underwater
-        if (blockType == Material.WATER || blockType == Material.STATIONARY_WATER)
-            return;
-        else if (relType == Material.WATER || relType == Material.STATIONARY_WATER)
+        if ( Utility.isSailableBlock(blockType) || Utility.isSailableBlock(relType) )
             return;
 
         // Bypass if player is placing on non-water and has the right permission
@@ -59,7 +46,7 @@ public class Listener implements org.bukkit.event.Listener
             return;
 
         // Bypass if player is placing on ice and has the right permission
-        if (blockType == Material.ICE || blockType == Material.PACKED_ICE)
+        if ( Utility.isIcyBlock(blockType) )
         if ( event.getPlayer().hasPermission(PERM_BYPASS_PLACEONICE) )
             return;
 
@@ -88,10 +75,8 @@ public class Listener implements org.bukkit.event.Listener
                 .add(0, -1.4, 0)
                 .getBlock().getType();
 
-        // Only handle if boat is on non-water/air surface. Allows air to compensate for waterfalls.
-        if (blockType == Material.WATER
-            || blockType == Material.STATIONARY_WATER
-            || blockType == Material.AIR)
+        // Only handle if boat is on invalid surface
+        if ( Utility.isSailableBlock(blockType) )
             return;
 
         // Prevent capturing of mobs in grounded boats, if enabled
@@ -108,7 +93,7 @@ public class Listener implements org.bukkit.event.Listener
             return;
 
         // Bypass if boat on ice and player has the right permission
-        if (blockType == Material.ICE || blockType == Material.PACKED_ICE)
+        if ( Utility.isIcyBlock(blockType) )
         if ( rider.hasPermission(PERM_BYPASS_RIDEONICE) )
             return;
 
@@ -140,10 +125,8 @@ public class Listener implements org.bukkit.event.Listener
             blockType = block.getType();
         }
 
-        // Only handle if boat is on non-water/air surface. Allows air to compensate for waterfalls.
-        if (blockType == Material.WATER
-            || blockType == Material.STATIONARY_WATER
-            || blockType == Material.AIR)
+        // Only handle if boat is on invalid surface
+        if ( Utility.isSailableBlock(blockType) )
             return;
 
         if (CONFIG.autoDestroyGroundedBoats)
