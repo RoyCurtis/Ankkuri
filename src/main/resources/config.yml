@@ -3,3 +3,13 @@
 # If enabled, prevents grounded boats from capturing mobs. Useful to prevent boat "traps" from
 # working (default: true)
 blockGroundedBoatCapture: true
+
+# If enabled, players who don't have the right bypass permissions are automatically ejected from
+# their boat, if it runs aground. Likewise, mobs are ejected if blockGroundedBoatCapture is enabled.
+# This may slow down server performance. (default: false)
+autoEjectFromGroundedBoats: false
+
+# If enabled, boats that run aground are automatically destroyed. This may slow down server
+# performance. (default: false)
+autoDestroyGroundedBoats: false
+

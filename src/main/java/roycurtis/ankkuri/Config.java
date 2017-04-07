@@ -8,7 +8,11 @@ import static roycurtis.ankkuri.Ankkuri.PLUGIN;
 class Config
 {
     /** If enabled, prevents grounded boats from capturing mobs */
-    boolean blockGroundedBoatCapture = true;
+    boolean blockGroundedBoatCapture   = true;
+    /** If enabled, auto-ejects non-bypassing players and mobs from grounded boats */
+    boolean autoEjectFromGroundedBoats = false;
+    /** If enabled, auto-destroys boats that run aground */
+    boolean autoDestroyGroundedBoats   = false;
 
     Config()
     {
@@ -19,6 +23,14 @@ class Config
 
         blockGroundedBoatCapture = config.getBoolean(
             "blockGroundedBoatCapture", blockGroundedBoatCapture
+        );
+
+        autoEjectFromGroundedBoats = config.getBoolean(
+            "autoEjectFromGroundedBoats", autoEjectFromGroundedBoats
+        );
+
+        autoDestroyGroundedBoats = config.getBoolean(
+            "autoDestroyGroundedBoats", autoDestroyGroundedBoats
         );
     }
 }
